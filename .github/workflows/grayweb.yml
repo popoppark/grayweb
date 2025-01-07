@@ -6,20 +6,24 @@ on:
       - 'master'
     tags:
       - '*'
+
 jobs:
   push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Dcoker meta
+      
+      - name: Docker Meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: heeryun/grayweb:1.0
+          images: heeryun/grayweb
           tag-semver: |
-            {{version}}
-            {{major}}.{{minor}}
+            1.0
+            1.0.0
+            latest
+      
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
         
@@ -31,6 +35,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
